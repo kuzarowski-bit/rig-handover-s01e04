@@ -1,0 +1,44 @@
+name: Deploy public preview
+
+on:
+  workflow_dispatch:
+    inputs:
+      html_base64:
+        description: Base64-encoded self-contained HTML page; the preview is not committed to the repository.
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Prepare static page
+        env:
+          HTML_BASE64: ${{ inputs.html_base64 }}
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          printf '%s' "$HTML_BASE64" | base64 --decode > _site/2026-10-28.html
+          test -s _site/2026-10-28.html
+          grep -qi '<!doctype html>' _site/2026-10-28.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
