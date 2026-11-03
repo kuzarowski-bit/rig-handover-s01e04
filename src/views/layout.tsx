@@ -16,6 +16,9 @@ const css = `
   th { color: var(--mute); font-weight: normal; }
   .warn { color: var(--warn); }
   .mute { color: var(--mute); }
+  .digest-row--many-retries th, .digest-row--many-retries td { font-weight: bold; }
+  .digest-row--failed th, .digest-row--failed td { text-decoration: underline; text-decoration-style: dotted; }
+  .digest-label { display: inline-block; margin-left: .5rem; padding: 0 .3rem; border: 1px solid currentColor; font-size: .8em; font-weight: bold; }
 `;
 
 export function Layout(props: { title: string; lane: Lane; children: Child }) {
