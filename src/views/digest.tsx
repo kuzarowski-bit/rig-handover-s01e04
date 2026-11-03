@@ -45,12 +45,20 @@ export function DigestPage({ night, digest }: { night: string; digest: DigestRea
                   <td>
                     {row.retries}
                     {hasManyRetries && (
-                      <span class="digest-label digest-label--many-retries">3+ retries</span>
+                      <>
+                        {' '}
+                        <span class="digest-label digest-label--many-retries">3+ retries</span>
+                      </>
                     )}
                   </td>
                   <td>
                     {row.lastStatus}
-                    {failed && <span class="digest-label digest-label--failed">failed</span>}
+                    {failed && (
+                      <>
+                        {' '}
+                        <span class="digest-label digest-label--failed">failed</span>
+                      </>
+                    )}
                   </td>
                   <td>{row.lastError ?? '—'}</td>
                   <td>{row.firstAt}</td>

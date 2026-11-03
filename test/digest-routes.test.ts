@@ -71,6 +71,9 @@ describe('digest routes', () => {
     expect(html).toContain('digest-row--failed');
     expect(html).toContain('3+ retries');
     expect(html).toContain('failed');
+    const text = html.replace(/<[^>]*>/g, '');
+    expect(text).toContain('3 3+ retries');
+    expect(text).toContain('fail failed');
   });
 
   it('returns 404 for a night with no run log on both routes', async () => {
