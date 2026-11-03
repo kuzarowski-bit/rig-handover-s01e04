@@ -55,5 +55,19 @@ export function createApp(config: RigConfig = loadConfig()) {
     }
   });
 
+  app.get('/api/digest/:night', async (c) => {
+    const night = c.req.param('night');
+    if (!isCalendarNight(night)) return c.notFound();
+
+    try {
+      const digest = await readNight(config.runsDir, night);
+      const rows = [...digest.rows].sort((left, right) => left.job.localeCompare(right.job));
+      return c.json(rows);
+    } catch (error) {
+      if (isMissingFile(error)) return c.notFound();
+      throw error;
+    }
+  });
+
   return app;
 }
